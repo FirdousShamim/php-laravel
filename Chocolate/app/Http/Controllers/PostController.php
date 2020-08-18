@@ -3,21 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Post;
 
 class PostController extends Controller
 {
-    public function show ($post)
+    public function show ($slug)
     {
-        $posts = [
-                     '1' => 'One',
-                     '2' => 'Two'
-                ];
-            
-                if(! array_key_exists($post,$posts)){
-                    abort( 404, 'Landed on Null Page');
-                }
-                return view('post', [
-                    'post' => $posts[$post]
-                ]);
+       // $post = DB::table('posts')->where('slug',$slug)->first();
+        
+       $post= Post :: where('slug',$slug)->firstorfail();
+
+        return view('post', [
+            'post' => $post
+        ]);
     }   
 }

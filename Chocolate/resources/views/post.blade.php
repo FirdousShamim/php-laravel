@@ -8,6 +8,6 @@
 
     </head>
     <body>
-        <h1>test {{ $post }}</h1>
+        <h1>test {{ $post->body }}</h1>
     </body>
 </html>
