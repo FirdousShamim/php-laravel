@@ -27,3 +27,20 @@ use Illuminate\Support\Facades\Route;
 //     ]);
 // });
 Route::get('/posts/{post}','PostController@show');
+Route::get('/welcome',function() {
+    return view('welcome');
+});
+Route::get('/contact',function() {
+    return view('contact');
+});
+Route::get('/aboutus',function() {
+    return view('aboutus',[
+
+        'articles'=> App\Article::take(3)->latest()->get()    
+    ]);
+});
+Route::get('/',function() {
+    return view('welcome');
+});
+Route::get('/articles','ArticleController@home');
+Route::get('/articles/{article}','ArticleController@show');
