@@ -26,7 +26,8 @@ use Illuminate\Support\Facades\Route;
 //         'post' => $posts[$post]
 //     ]);
 // });
-Route::get('/posts/{post}','PostController@show');
+//Route::get('/posts/{post}','PostController@show');
+
 Route::get('/welcome',function() {
     return view('welcome');
 });
@@ -43,4 +44,8 @@ Route::get('/',function() {
     return view('welcome');
 });
 Route::get('/articles','ArticleController@home');
+Route::post('/articles','ArticleController@store');
+Route::get('/articles/create','ArticleController@create');
 Route::get('/articles/{article}','ArticleController@show');
+Route::get('/articles/{article}/edit','ArticleController@edit');
+Route::put('/articles/{article}','ArticleController@update');
