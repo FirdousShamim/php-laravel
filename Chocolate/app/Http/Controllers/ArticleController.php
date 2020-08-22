@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Tag;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -10,8 +11,15 @@ class ArticleController extends Controller
     //
     public function home()
     {
-        $articles=Article::latest()->get();
-
+        if (request('tag')){
+            $articles= Tag::where('name',request('tag'))->firstorfail()->articles;
+            
+            //return dump($articles);
+        }
+        else
+        {
+            $articles=Article::latest()->get();
+        }
         return view('articles.home',['articles'=>$articles
         ]);
 
@@ -25,15 +33,24 @@ class ArticleController extends Controller
     }
     public function create()
     {
-        return view('articles.create');
+        return view('articles.create',[
+            'tags' => Tag::all()
+        ]);
     }
     public function store()
     {
         //die('Hello'); 
         //dump(request()->all());
-        Article::create($this->validateArticle());
+        $this->validateArticle();
+        
+        $article= new Article(request(['title','excerpt','body']));
+        
+        $article->user_id=1;
+        $article->save();
 
-        return redirect('/articles');
+        $article->tags()->attach(request('tags'));
+
+        return redirect(route('articles.home'));
     }
     public function edit(Article $article)
     {
@@ -46,7 +63,7 @@ class ArticleController extends Controller
         $article->update($this->validateArticle());
 
 
-        return redirect('/articles/'.$article->id);
+        return redirect(route('articles.show',$article));
     }
     public function destroy()
     {
@@ -57,7 +74,8 @@ class ArticleController extends Controller
         return request()->validate([
             'title'=>['required','min:3','max:255'],
             'excerpt'=>['required'],
-            'body'=>['required']
+            'body'=>['required'],
+            'tags'=>'exists.tags,id'
         ]);
          
     }
