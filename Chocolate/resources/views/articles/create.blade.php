@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="feild">
-                    <label class='label' for="body">Tags</label>
+                    <label class='label' for="tags">Tags</label>
 
                     <div class="select is-multiple control">
                         <select 

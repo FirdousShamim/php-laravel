@@ -19,6 +19,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/home/plans','PlansController@index');
+Route::get('/home/plans','PlansController@index')->name('plans.index');
+Route::post('/home/plans','PlansController@store');
+Route::get('/home/plans/create','PlansController@create');

@@ -53,8 +53,7 @@ class ArticleController extends Controller
         return redirect(route('articles.home'));
     }
     public function edit(Article $article)
-    {
-        
+    {      
 
         return view('articles.edit',compact('article'));
     }

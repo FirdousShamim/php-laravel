@@ -1,21 +1,28 @@
 @extends('layouts.app')
 
-@section('addplan')
-    
-    <a class="navbar-brand" href="{{ url('/') }}">
-    Add Plan
-                </a>
-@endsection
-
 @section('content')
-
-    <div class="row">
-        <div class="col-sm-4" style="border-style: solid;">
-        list goes here 
-        </div>
-        <div class="col-sm-8">
-            Detailed plan here
+<div class="container">
+    <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">All your plans
+                        <a href="/home/plans/create" class="float-right">New Plan</a>
+                    </div>
+                    <div class="card-body">
+                        @forelse ($plans as $plan)
+                            <div class="small-text">
+                                <div class="row">
+                                    <a href="#">{{$plan->title}}</a>
+                                    <p class="float-right">{{$plan->status}}</p>
+                                </div>                                
+                            </div>
+                        @empty 
+                            <p>No plans yet</p>
+                        @endforelse
+                    </div>
+                </div>
         </div>
     </div>
 
+</div>
 @endsection
