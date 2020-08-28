@@ -18,4 +18,8 @@ class Plans extends Model
         $this->status=true;
         $this->save();
     }
+    public function hasTasks()
+    {
+        return $this->hasMany(Tasks::class,'plan_id');
+    }
 }

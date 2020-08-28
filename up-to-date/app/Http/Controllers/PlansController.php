@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Plans;
+use App\User;
 class PlansController extends Controller
 {
     
@@ -21,6 +22,12 @@ class PlansController extends Controller
     {
         return view('plans.create');
     }
+    public function show(Plans $plan)
+    {       
+
+        return view('plans.show',['plan'=>$plan
+        ]);
+    }
     public function store()
     {
         //die('Hello'); 
@@ -35,11 +42,27 @@ class PlansController extends Controller
 
         return redirect(route('plans.index'));
     }
+    public function edit(Plans $plan)
+    {
+        return view('plans.edit',compact('plan'));
+    }
+    public function update(Plans $plan)
+    {
+        $plan->update($this->validatePlan());
+        //dump($plan);
+        return redirect(route('plans.show',$plan));
+    }
+    public function complete(Plans $plan)
+    {        
+        $plan->completed();
+        //dd($plan);
+        return redirect(route('plans.show',$plan));
+    }
     protected function validatePlan()
     {
         return request()->validate([
             'title'=>['required','min:3','max:255'],
-            'due_date' => ['required|date_format:Y-m-d|after:start_date']
+            'due_date' => ['required|date_format:Y-m-d']
             
             ]);
          
