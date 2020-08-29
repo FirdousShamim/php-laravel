@@ -5,12 +5,12 @@
 
 @section('content')
 
+
 <div id="wrapper" style="margin: 25px 25px 25px 25px">
 	<div id="page" class="container-full" >
         <div class="row">
             <div class="col-md-2" style="background-color:white; padding:6px" id="content">
-                <div class="title">
-                    
+                <div class="title">                    
                         @if  ($plan->status == 0)
                             <h2 style="color:Red">{{$plan->title}}
                         @else 
@@ -54,26 +54,81 @@
                         <a href="/home/plans/{{$plan->id}}/createtask" class="float-right"><i class="fa fa-plus-circle">Create Task</i></a>
                     </div>
                     <div class="card-body">
-                        @if ($tasks ?? '')
-                            @forelse ($tasks ?? '' as $task)
-                                <div class="small-text">
-                                    <div class="row">
-                                        <div class="col-md-10"><a href="#">{{$task->title}}</a></div>
-                                        <div class="col-md-2">
-                                            @if  ($task->status == 0)
-                                                Incomplete
-                                            @else 
-                                                Complete
-                                            @endif
-                                        </div>
-                                    </div>                                                                  
-                                </div>
-                            @empty 
-                                <p>No plans yet</p>
-                            @endforelse
-                        @else
+                    <div class="row big-text">
+                        <div class="col-2">Title</div>
+                        <div class="col-2">Start</div>
+                        <div class="col-2">Due Date</div>
+                        <div class="col-2">Assigned to</div>
+                        <div class="col-2">Status</div>
+                        <div class="col-1"></i></div>
+                        <div class="col-1"></i></div>
+                        
+                    </div>
+                    @forelse ($tasks as $task)
+                            
+                                <div class="row">
+                                    
+                                        @if  ($task->status == 0)
+                                        
+                                            <div class="col-2">{{$task->title}}</div>
+                                            <div class="col-2">{{Str::of($task->created_at)->before(' ')}}</div>
+                                            <div class="col-2">{{Str::of($task->due_date)->before(' ')}}</div>
+                                            <div class="col-2">{{$task->user_assigned }}</div>
+                                            <div class="col-2">Incomplete</div>
+
+                                            <form method="POST" action='/home/plans/{{$plan->id}}/tasks/{{$task->id}}/complete'>
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="hidden" name="task_id" value="{{$task->id}}">
+                                                <div class="control">
+                                                    <button class="btn"  type="submit"><div class="col-1"><i class="fa fa-check"></i></div></button>
+                                                </div>
+                                            </form>
+                                            
+                                            <form method="POST" action='/home/plans/{{$plan->id}}/tasks/{{$task->id}}/delete'>
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="hidden" name="task_id" value="{{$task->id}}">
+                                                <div class="control">
+                                                    <button class="btn"  type="submit"><div class="col-1" ><i class="fa fa-trash"></i></div></button>
+                                                </div>
+                                            </form>
+                                        @else 
+                                        
+                                            <div class="col-2" style="color: Green">{{$task->title}}</div>
+                                            <div class="col-2" style="color: Green">{{Str::of($task->created_at)->before(' ')}}</div>
+                                            <div class="col-2" style="color: Green">{{Str::of($task->due_date)->before(' ')}}</div>
+                                            <div class="col-2" style="color: Green">{{$task->user_assigned }}</div>
+                                            <div class="col-2" style="color: Green">Complete</div>
+
+                                            <form method="POST" action='/home/plans/{{$plan->id}}/tasks/{{$task->id}}/uncomplete'>
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="hidden" name="task_id" value="{{$task->id}}">
+                                                <div class="control">
+                                                    <button class="btn"  type="submit"><div class="col-1" style="color: Green"><i class="fa fa-check"></i></div></button>
+                                                </div>
+                                            </form>
+
+                                            <form method="POST" action='/home/plans/{{$plan->id}}/tasks/{{$task->id}}/delete'>
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="hidden" name="task_id" value="{{$task->id}}">
+                                                <div class="control">
+                                                    <button class="btn"  type="submit"><div class="col-1" ><i class="fa fa-trash"></i></div></button>
+                                                </div>
+                                            </form>
+                                            
+  
+                                            
+                                        @endif
+                                    
+                                </div>                                                                  
+                            
+                        @empty 
                             <p>No tasks yet</p>
-                        @endif
+                        @endforelse
+                       
                     </div>
                 </div>
             </div>

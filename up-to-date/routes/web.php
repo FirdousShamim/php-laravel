@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PlansController;
+use App\Http\Controllers\TasksController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +30,8 @@ Route::put('/home/plans/{plan}','PlansController@update');
 
 Route::put('/home/plans/{plan}/complete','PlansController@complete');
 
-Route::get('/home/tasks','TasksController@index')->name('tasks.index');;
 Route::post('/home/plans/{plan}','TasksController@store');
 Route::get('/home/plans/{plan}/createtask','TasksController@create');
+Route::put('/home/plans/{plan}/tasks/{task}/complete','TasksController@complete');
+Route::put('/home/plans/{plan}/tasks/{task}/uncomplete','TasksController@uncomplete');
+Route::put('/home/plans/{plan}/tasks/{task}/delete','TasksController@destroy');

@@ -12,6 +12,7 @@
             <form method="POST" action='/home/plans/{plan}'>
             @csrf
                 <div class="feild">
+                    <input type="hidden" name="plan_id" value="{{$plan->id}}">
                     <label class='label' for='title'>Task Title</label>
 
                     <div class="control">
@@ -26,19 +27,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="feild" type="hidden">
-                    <label class='label' for='plan_id'>Under Plan</label>
-
-                    <div class="control">
-                        <input 
-                            class="input"
-                            type="text" 
-                            name="plan_id" 
-                            id="plan_id"
-                            value="{{ $plan->id }}"
-                            >
-                    </div>
-                </div>
+                
                 <div class="feild ">
                     <label class='label' for='duedate'>Due Date</label>
 

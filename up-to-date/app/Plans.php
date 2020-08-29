@@ -10,8 +10,8 @@ class Plans extends Model
     protected $guarded = [];
     public function author()
     {
-        //article->user
-        return $this->belongsTo(User::class,'user_id');
+        //article->user[DO not touch,working fine ]
+        return $this->belongsTo(User::class,'user_id'); //select * from user where planID=(current planID)
     }
     public function completed()
     {
@@ -20,6 +20,8 @@ class Plans extends Model
     }
     public function hasTasks()
     {
-        return $this->hasMany(Tasks::class,'plan_id');
+        //[DO not touch,working fine ]
+        return $this->hasMany(Tasks::class,'plan_id');  //select * from tasks where plansId=current plans id)
+
     }
 }

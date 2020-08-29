@@ -15,6 +15,7 @@ class PlansController extends Controller
 
     public function index()
     {
+        //dump(Plans::latest()->whereIn('user_id', [auth()->user()->id])->get());
         return view('plans.index',['plans'=>Plans::latest()->whereIn('user_id', [auth()->user()->id])->get()
         ]);
     }
@@ -25,7 +26,16 @@ class PlansController extends Controller
     public function show(Plans $plan)
     {       
 
-        return view('plans.show',['plan'=>$plan
+        $plan->load('hasTasks');
+        $r=$plan->getRelations();
+        $r=(object)$r;
+        $r=$r->hasTasks;
+        // $ap=Plans::all();
+        // $l=$ap->last();
+        //dump($p,$ap,$l,$l->hasTasks());
+        //dump($plan,$r);
+
+        return view('plans.show',['plan'=>$plan ,'tasks'=>$r
         ]);
     }
     public function store()
@@ -54,7 +64,7 @@ class PlansController extends Controller
     }
     public function complete(Plans $plan)
     {        
-        $plan->completed();
+        // $plan->completed();
         //dd($plan);
         return redirect(route('plans.show',$plan));
     }
@@ -67,4 +77,5 @@ class PlansController extends Controller
             ]);
          
     }
+    
 }

@@ -39,6 +39,6 @@ class User extends Authenticatable
 
     public function hasplans()
     {
-        return $this->hasMany(Plans::class,'user_id');
+        return $this->hasMany(Plans::class); //select * from plans where  userId= (cureent);
     }
 }
