@@ -27,7 +27,13 @@ class TasksController extends Controller
     public function create(Plans $plan)
     {
         //dump($plan, request());
-        return view('tasks.createtask',['plan'=>$plan]);
+        if ( auth()->user() == ((object)($plan->load('author')->getRelations()))->author)
+        {
+            return view('tasks.createtask',['plan'=>$plan]);
+        }
+        else{
+            return response()->json(['error' => 'Not Authorized to view this'], 403);
+        }
     }
 
     public function store()
@@ -37,7 +43,7 @@ class TasksController extends Controller
         $this->validateTask();
         // //$task= new Tasks(request(['title','plan_id','duedate']));
         $task= new Tasks();
-        $task->title=request('title');
+        $task->title=Str::ucfirst(request('title'));
         $task->due_date=request('duedate');
         $task->plan_id=request('plan_id');
         $task->save();

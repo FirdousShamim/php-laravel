@@ -13,10 +13,32 @@ class Plans extends Model
         //article->user[DO not touch,working fine ]
         return $this->belongsTo(User::class,'user_id'); //select * from user where planID=(current planID)
     }
-    public function completed()
+    public function isCompleted()
     {
-        $this->status=true;
+        $plan=$this;
+        $f=1;
+        $plan->load('hasTasks');
+        $r=$plan->getRelations();
+        $r=(object)$r;
+        $r=$r->hasTasks;
+        // dump($r);
+        foreach($r as $t)
+        {
+            if ($t->status == 1)
+            {
+               continue;
+            }
+            elseif ($t->status==0)
+            {
+                $f=0;
+                break;
+            }
+        }
+        // dd($f,$this);
+        $this->status=$f;
         $this->save();
+        //dump($this->status);
+
     }
     public function hasTasks()
     {

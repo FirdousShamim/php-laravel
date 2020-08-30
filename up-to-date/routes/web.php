@@ -28,7 +28,7 @@ Route::get('/home/plans/{plan}','PlansController@show')->name('plans.show');
 Route::get('/home/plans/{plan}/edit','PlansController@edit');
 Route::put('/home/plans/{plan}','PlansController@update');
 
-Route::put('/home/plans/{plan}/complete','PlansController@complete');
+// Route::put('/home/plans/{plan}/complete','PlansController@complete');
 
 Route::post('/home/plans/{plan}','TasksController@store');
 Route::get('/home/plans/{plan}/createtask','TasksController@create');

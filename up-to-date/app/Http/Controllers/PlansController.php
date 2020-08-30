@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Plans;
 use App\User;
 class PlansController extends Controller
@@ -24,19 +25,25 @@ class PlansController extends Controller
         return view('plans.create');
     }
     public function show(Plans $plan)
-    {       
-
-        $plan->load('hasTasks');
-        $r=$plan->getRelations();
-        $r=(object)$r;
-        $r=$r->hasTasks;
-        // $ap=Plans::all();
-        // $l=$ap->last();
-        //dump($p,$ap,$l,$l->hasTasks());
-        //dump($plan,$r);
-
-        return view('plans.show',['plan'=>$plan ,'tasks'=>$r
-        ]);
+    {     
+        
+        if ( auth()->user() == ((object)($plan->load('author')->getRelations()))->author)
+        {
+            //dump("auth user");
+            $plan->isCompleted();
+            $plan->load('hasTasks');
+            $r=$plan->getRelations();
+            $r=(object)$r;
+            $r=$r->hasTasks;
+            // $ap=Plans::all();
+            // $l=$ap->last();
+            //dump($p,$ap,$l,$l->hasTasks());
+            //dump($plan,$r);
+            return view('plans.show',['plan'=>$plan ,'tasks'=>$r]);
+        }
+        else{
+            return response()->json(['error' => 'Not Authorized to view this'], 403);
+        }
     }
     public function store()
     {
@@ -45,7 +52,7 @@ class PlansController extends Controller
         $this->validatePlan();
         
         $plan= new Plans();
-        $plan->title=request('title');
+        $plan->title=Str::title(request('title'));
         $plan->due_date=request('duedate');
         $plan->user_id=auth()->user()->id;
         $plan->save();
@@ -62,12 +69,14 @@ class PlansController extends Controller
         //dump($plan);
         return redirect(route('plans.show',$plan));
     }
-    public function complete(Plans $plan)
-    {        
-        // $plan->completed();
-        //dd($plan);
-        return redirect(route('plans.show',$plan));
-    }
+    // public function complete(Plans $plan)
+    // {      
+    //     $plan->isCompleted();
+    //     //$plan->completed();
+    //     //dd($plan);
+    //     return redirect(route('plans.show',$plan));
+    // }
+ 
     protected function validatePlan()
     {
         return request()->validate([
