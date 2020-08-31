@@ -3,15 +3,25 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use phpDocumentor\Reflection\Types\Null_;
 
 class Plans extends Model
 {
     //
+    
     protected $guarded = [];
+    protected $casts = [
+        'collaborator_id' => 'array',
+    ];
     public function author()
     {
         //article->user[DO not touch,working fine ]
         return $this->belongsTo(User::class,'user_id'); //select * from user where planID=(current planID)
+    }
+    public function collaborators()
+    {
+           return $this->hasMany(Collaborators::class,'plan_id'); //select * from user where planID=(current planID)
+        
     }
     public function isCompleted()
     {

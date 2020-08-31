@@ -39,12 +39,18 @@
                 </ul>
                 <hr>                  
                 <div class="row"> 
-                <div class="col-10"><h4>Collaborators</h4></div>
-                <div class="col-2"><a href="#"><i class="fa fa-plus-circle"></i></a></div>
-                    
-                    
+                    <div class="col-10"><h4>Collaborators</h4></div>
+                    <div class="col-2"><a href="#"><i class="fa fa-plus-circle"></i></a></div>                    
                 </div>
-                No contibutors yet
+                <ul>
+                    @forelse($collaborators as $collaborator)
+                        <li>{{(App\User::find($collaborator->user_id))->name}}</li>
+                    @empty
+                        No Collaborators yet
+                    @endforelse
+                       
+                </ul>
+                
             </div>
 
 
@@ -68,10 +74,10 @@
                                             </div>
                                             <div id="card-{{$task->id}}" class="collapse" aria-labelledby="heading-{{$task->id}}">
                                             <ul class="list-group list-group-flush">
-                                                <li class="list-group-item">Begin:</li>
-                                                <li class="list-group-item">Due:</li>
-                                                <li class="list-group-item">End:</li>
-                                                <li class="list-group-item">Assigned:</li>
+                                                <li class="list-group-item">Begin: {{Str::of($task->created_at)->before(' ')}}</li>
+                                                <li class="list-group-item">Due: {{Str::of($task->due_date)->before(' ')}}</li>
+                                                <li class="list-group-item">End: </li>
+                                                <li class="list-group-item">Assigned:{{ $task->user_assigned}}</li>
 
                                             </ul>
                                             
@@ -116,9 +122,9 @@
                                             </div>
                                             <div id="card-{{$task->id}}" class="collapse" aria-labelledby="heading-{{$task->id}}">
                                             <ul class="list-group list-group-flush">
-                                                <li class="list-group-item">Begin:</li>
+                                                <li class="list-group-item">Begin: {{Str::of($task->created_at)->before(' ')}}</li>
                                                 <li class="list-group-item">End:</li>
-                                                <li class="list-group-item">Assigned:</li>
+                                                <li class="list-group-item">Assigned: {{ $task->user_assigned}}</li>
 
                                             </ul>
                                             

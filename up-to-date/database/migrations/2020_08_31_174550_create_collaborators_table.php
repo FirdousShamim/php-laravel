@@ -4,28 +4,30 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePlansTable extends Migration
+class CreateCollaboratorsTable extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    
     public function up()
     {
-        Schema::create('plans', function (Blueprint $table) {
+        Schema::create('collaborators', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('plan_id');
             $table->unsignedBigInteger('user_id');
-            $table->string('title');
-            $table->boolean('status')->default(false);
             $table->timestamps();
-            $table->timestamp('due_date')->nullable();
 
-            $table->foreign('user_id')
+            $table->foreign('plan_id')
                 ->references('id')
-                ->on('users')
+                ->on('plans')
                 ->onDelete('cascade');
+            
+            $table->foreign('user_id')
+            ->references('id')
+            ->on('users')
+            ->onDelete('cascade');
         });
     }
 
@@ -36,6 +38,6 @@ class CreatePlansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('plans');
+        Schema::dropIfExists('collaborators');
     }
 }

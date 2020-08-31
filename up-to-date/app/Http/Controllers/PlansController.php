@@ -32,14 +32,16 @@ class PlansController extends Controller
             //dump("auth user");
             $plan->isCompleted();
             $plan->load('hasTasks');
+            $plan->load('collaborators');
             $r=$plan->getRelations();
             $r=(object)$r;
-            $r=$r->hasTasks;
+            $t=$r->hasTasks;
+            $c=$r->collaborators;
             // $ap=Plans::all();
             // $l=$ap->last();
             //dump($p,$ap,$l,$l->hasTasks());
-            //dump($plan,$r);
-            return view('plans.show',['plan'=>$plan ,'tasks'=>$r]);
+            //dump($plan,$t,$c);
+            return view('plans.show',['plan'=>$plan ,'tasks'=>$t, 'collaborators'=>$c]);
         }
         else{
             return response()->json(['error' => 'Not Authorized to view this'], 403);
@@ -76,7 +78,7 @@ class PlansController extends Controller
     //     //dd($plan);
     //     return redirect(route('plans.show',$plan));
     // }
- 
+
     protected function validatePlan()
     {
         return request()->validate([

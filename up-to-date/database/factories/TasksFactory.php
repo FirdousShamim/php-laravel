@@ -12,6 +12,6 @@ $factory->define(Tasks::class, function (Faker $faker) {
         'plan_id'=>factory(\App\Plans::class),
         'title'=>$faker->sentence,
         'due_date'=>$faker->dateTimeThisMonth(),     
-        'user_assigned'=>$faker->intdiv,
+        'user_assigned'=>$faker->randomDigit(),
     ];
 });
