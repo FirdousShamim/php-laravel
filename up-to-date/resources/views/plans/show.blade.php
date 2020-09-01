@@ -34,7 +34,7 @@
                         Start Date: {{Str::of($plan->created_at)->before(' ')}}
                     </li>
                     @if( $plan->end_date != NULL)
-                        <li> End Date: {{Str::of($plan->due_date)->before(' ')}} </li>
+                        <li> End Date: {{Str::of($plan->end_date)->before(' ')}} </li>
                     @else
                     <li>
                         Due Date:   {{Str::of($plan->due_date)->before(' ')}}
@@ -58,7 +58,7 @@
                        
                 </ul>
                 <hr>
-                <a href="/home/plans" class="float-right">Go to Plans</a>
+                <a href="/home/plans" class="float-right"><i class="fa fa-arrow-left" >Go to Plans</i></a>
                 
             </div>
 

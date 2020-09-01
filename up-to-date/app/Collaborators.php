@@ -8,8 +8,5 @@ class Collaborators extends Model
 {
     //
 
-    public function collaboratorDetail()
-    {
-        
-    }
+    
 }

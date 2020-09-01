@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AddCollab;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use App\Plans;
 
 use App\User;
+use App\Collaborators;
 use Illuminate\Support\Facades\Mail;
 
 class PlansController extends Controller
@@ -91,19 +93,43 @@ class PlansController extends Controller
 
     public function addCollaborator(Plans $plan)
     {
-        dump(session('message'),$plan);
+        //dump(session('message'),$plan);
         return view('plans.addCollab',compact('plan'));
     }
     public function emailCollaborator(Plans $plan)
     {
+        //dump(Str::of(request()->getPathInfo())->beforeLast('/'));
+        
         request()->validate(['email'=>'required|email']);
+        $a=(((object)($plan->load('author')->getRelations()))->author)->name;
+
+        $url='http://up-to-date.test'.Str::of(request()->getPathInfo())->beforeLast('/');
         //dump(request('email'));
-        Mail::raw('Invite',function($message){
-            $message->to(request('email'))
-                    ->subject('Collaborator');
-        });
+        //dump(User::all()->whereIn('email',request('email'))->first());
+
+        Mail::to(request('email'))
+             ->send(new AddCollab($url, $plan->title, $a ));
+             
+        $u=User::all()->whereIn('email',request('email'))->first();
+        if ($u == NULL)
+        {
+            //user does'nt exist need to create a account 
+            //listen for the user registering
+            //reflect the chnage in User and Collaborator DB 
+        }
+        else
+        {
+
+            $collab= new Collaborators();
+            $collab->user_id=$u->id;
+            $collab->plan_id=$plan->id;
+            $collab->save();
+        }
+        
+
         return redirect(route('plans.addCollab',$plan))
              ->with('message','Inivite for collaboration sent');
+
     }
     // public function complete(Plans $plan)
     // {      

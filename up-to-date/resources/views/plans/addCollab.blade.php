@@ -7,7 +7,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-            <div class="card-header">Add Collaborator </div>
+            <div class="card-header">Add Collaborator 
+            <a href="/home/plans/{{$plan->id}}" class="float-right"><i class="fa fa-arrow-left" >Go to Plans</i></a>
+
+            </div>
             <div class="card-body">
                 @if (session('message'))
                     <div class="alert alert-success" role="alert">
@@ -38,9 +41,7 @@
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
                                     Send Invitation
-                                </button>
-                                
-                                
+                                </button>                                
                             </div>
                             
                     </div>

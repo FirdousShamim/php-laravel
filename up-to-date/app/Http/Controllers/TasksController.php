@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Tasks;
 use App\Plans;
+use phpDocumentor\Reflection\Types\True_;
+
 class TasksController extends Controller
 {
     public function __construct()
@@ -27,7 +29,18 @@ class TasksController extends Controller
     public function create(Plans $plan)
     {
         //dump($plan, request());
-        if ( auth()->user() == ((object)($plan->load('author')->getRelations()))->author)
+        $isCollaborator=False;
+        $cs=((object)($plan->load('collaborators')->getRelations()))->collaborators;
+        foreach ($cs as $c)
+        {
+            //dump($c->user_id,auth()->user()->id);
+            if($c->user_id == auth()->user()->id)
+            {
+                $isCollaborator=True;
+                break;
+            }
+        }
+        if ( auth()->user() == ((object)($plan->load('author')->getRelations()))->author || $isCollaborator==TRUE)
         {
             return view('tasks.createtask',['plan'=>$plan]);
         }
@@ -95,8 +108,6 @@ class TasksController extends Controller
 
     public function destroy(Plans $plan)
     {        
-        // 
-        // dd('he');
         $task_id=Str::of(request()->getPathInfo())->beforeLast('/')->afterLast('/');
         $task=Tasks::all()->whereIn('id',$task_id)->first();
         $task->delete();

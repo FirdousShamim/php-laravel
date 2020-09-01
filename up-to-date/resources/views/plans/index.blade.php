@@ -13,23 +13,21 @@
                             <div class="col-md-10">Plans</div>
                             <div class="col-md-2">Status</div>
                         </div>
-                         
-                        @forelse ($plans as $plan)
+
+                        @foreach ($plans as $plan)
                             <div class="small-text">
                                 <div class="row">
                                     <div class="col-md-10"><a href="/home/plans/{{$plan->id}}">{{$plan->title}}</a></div>
                                     <div class="col-md-2">
                                         @if  ($plan->status == 0)
                                             Incomplete
-                                        @else 
+                                        @else
                                             Complete
                                         @endif
                                     </div>
-                                </div>                                                                  
+                                </div>
                             </div>
-                        @empty 
-                            <p>No plans yet</p>
-                        @endforelse
+                        @endforeach
 
                     @foreach ($collabs as $collab)
                     <div class="row">
@@ -37,13 +35,18 @@
                         <div class="col-md-2">
                             @if  ((App\Plans::find($collab->plan_id))->status == 0)
                                 Incomplete
-                            @else 
+                            @else
                                 Complete
                             @endif
                         </div>
                     </div>
-                                   
+
                     @endforeach
+
+
+                    @if ( ($collabs->isEmpty()) &&  ($plans->isEmpty()))
+                        No plans yet
+                    @endif
 
                     </div>
                 </div>
