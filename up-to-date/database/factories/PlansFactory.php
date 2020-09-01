@@ -11,6 +11,7 @@ $factory->define(Plans::class, function (Faker $faker) {
         'user_id'=>factory(\App\User::class),
         'title'=>$faker->sentence,
         'due_date'=>$faker->dateTimeThisMonth(),
+        'end_date'=>$faker->dateTime(),
 
 
     ];

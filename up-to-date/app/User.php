@@ -41,4 +41,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Plans::class); //select * from plans where  userId= (cureent);
     }
+    public function isCollaboratingIn()
+    {
+        return $this->hasMany(Collaborators::class, 'user_id');
+    }
 }

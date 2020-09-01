@@ -13,5 +13,6 @@ $factory->define(Tasks::class, function (Faker $faker) {
         'title'=>$faker->sentence,
         'due_date'=>$faker->dateTimeThisMonth(),     
         'user_assigned'=>$faker->randomDigit(),
+        'end_date'=>$faker->dateTime(),
     ];
 });

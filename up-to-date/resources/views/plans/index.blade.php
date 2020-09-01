@@ -30,6 +30,21 @@
                         @empty 
                             <p>No plans yet</p>
                         @endforelse
+
+                    @foreach ($collabs as $collab)
+                    <div class="row">
+                        <div class="col-md-10"><a href="/home/plans/{{$collab->plan_id}}">{{(App\Plans::find($collab->plan_id))->title}}</a></div>
+                        <div class="col-md-2">
+                            @if  ((App\Plans::find($collab->plan_id))->status == 0)
+                                Incomplete
+                            @else 
+                                Complete
+                            @endif
+                        </div>
+                    </div>
+                                   
+                    @endforeach
+
                     </div>
                 </div>
             </div>

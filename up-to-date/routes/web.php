@@ -27,11 +27,15 @@ Route::get('/home/plans/create','PlansController@create');
 Route::get('/home/plans/{plan}','PlansController@show')->name('plans.show');
 Route::get('/home/plans/{plan}/edit','PlansController@edit');
 Route::put('/home/plans/{plan}','PlansController@update');
+Route::get('/home/plans/{plan}/addCollaborator','PlansController@addCollaborator')->name('plans.addCollab');
+Route::post('/home/plans/{plan}/addCollaborator','PlansController@emailCollaborator');
 
 // Route::put('/home/plans/{plan}/complete','PlansController@complete');
 
 Route::post('/home/plans/{plan}','TasksController@store');
 Route::get('/home/plans/{plan}/createtask','TasksController@create');
+Route::get('/home/plans/{plan}/tasks/{task}/edit', 'TasksController@edit');
+Route::put('/home/plans/{plan}/tasks/{task}', 'TasksController@update');
 Route::put('/home/plans/{plan}/tasks/{task}/complete','TasksController@complete');
 Route::put('/home/plans/{plan}/tasks/{task}/uncomplete','TasksController@uncomplete');
 Route::put('/home/plans/{plan}/tasks/{task}/delete','TasksController@destroy');

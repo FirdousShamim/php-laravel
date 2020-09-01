@@ -10,7 +10,7 @@
 	<div id="page" class="container-full" >
         <div class="row">
             <div class="col-md-2" style="background-color:white; padding:6px;" id="content">
-
+            
                 @if  ($plan->status == 0)
                     <h3 style="color:Red">{{$plan->title}}</h3>
                 @else 
@@ -19,6 +19,9 @@
                 @endif 
                 <hr/>
                 <ul>
+                    @if  ($owner ?? '')
+                        <li>Owner: {{$owner->name}}</li>
+                    @endif
                     <li>
                         Status: 
                         @if  ($plan->status == 0)
@@ -30,17 +33,21 @@
                     <li>
                         Start Date: {{Str::of($plan->created_at)->before(' ')}}
                     </li>
+                    @if( $plan->end_date != NULL)
+                        <li> End Date: {{Str::of($plan->due_date)->before(' ')}} </li>
+                    @else
                     <li>
                         Due Date:   {{Str::of($plan->due_date)->before(' ')}}
                         <a href="/home/plans/{{$plan->id}}/edit"  data-toggle="tooltip" title="Edit" data-placement="right">
                         <i class="fa fa-pencil-square-o" style=" vertical-align: middle;"></i>                            
                         </a>
                     </li>
+                    @endif
                 </ul>
                 <hr>                  
                 <div class="row"> 
                     <div class="col-10"><h4>Collaborators</h4></div>
-                    <div class="col-2"><a href="#"><i class="fa fa-plus-circle"></i></a></div>                    
+                    <div class="col-2"><a href="/home/plans/{{$plan->id}}/addCollaborator"><i class="fa fa-plus-circle"></i></a></div>                    
                 </div>
                 <ul>
                     @forelse($collaborators as $collaborator)
@@ -50,6 +57,8 @@
                     @endforelse
                        
                 </ul>
+                <hr>
+                <a href="/home/plans" class="float-right">Go to Plans</a>
                 
             </div>
 
@@ -76,15 +85,17 @@
                                             <ul class="list-group list-group-flush">
                                                 <li class="list-group-item">Begin: {{Str::of($task->created_at)->before(' ')}}</li>
                                                 <li class="list-group-item">Due: {{Str::of($task->due_date)->before(' ')}}</li>
-                                                <li class="list-group-item">End: </li>
-                                                <li class="list-group-item">Assigned:{{ $task->user_assigned}}</li>
+                                                @if ($task->end_date != NULL )
+                                                    <li class="list-group-item">End: {{Str::of($task->end_date)->before(' ')}}</li>
+                                                @endif
+                                               
 
                                             </ul>
                                             
                                             <div class="card-footer">
                                                 <div class="row justify-content-end" >
                                                     <div class="col-1">
-                                                        <a href="#"  data-toggle="tooltip" title="Edit" data-placement="right">
+                                                        <a href="/home/plans/{{$plan->id}}/tasks/{{$task->id}}/edit"  data-toggle="tooltip" title="Edit" data-placement="right">
                                                             <i class="fa fa-pencil-square-o" style=" vertical-align: middle;"></i>                            
                                                         </a>
                                                     </div>
@@ -123,18 +134,16 @@
                                             <div id="card-{{$task->id}}" class="collapse" aria-labelledby="heading-{{$task->id}}">
                                             <ul class="list-group list-group-flush">
                                                 <li class="list-group-item">Begin: {{Str::of($task->created_at)->before(' ')}}</li>
-                                                <li class="list-group-item">End:</li>
-                                                <li class="list-group-item">Assigned: {{ $task->user_assigned}}</li>
-
+                                                @if ($task->end_date != NULL )
+                                                    <li class="list-group-item">End: {{Str::of($task->end_date)->before(' ')}}</li>
+                                                @endif
+                                               
+                                                
                                             </ul>
                                             
                                             <div class="card-footer">
                                                 <div class="row justify-content-end" >
-                                                    <div class="col-1">
-                                                        <a href="#"  data-toggle="tooltip" title="Edit" data-placement="right">
-                                                            <i class="fa fa-pencil-square-o" style=" vertical-align: middle;"></i>                            
-                                                        </a>
-                                                    </div>
+                                                    
                                                     <div class="col-2">
                                                         <form method="POST" action='/home/plans/{{$plan->id}}/tasks/{{$task->id}}/delete'>
                                                             @csrf

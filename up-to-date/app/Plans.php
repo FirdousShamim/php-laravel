@@ -10,9 +10,9 @@ class Plans extends Model
     //
     
     protected $guarded = [];
-    protected $casts = [
-        'collaborator_id' => 'array',
-    ];
+
+
+
     public function author()
     {
         //article->user[DO not touch,working fine ]
@@ -26,7 +26,7 @@ class Plans extends Model
     public function isCompleted()
     {
         $plan=$this;
-        $f=1;
+        $f=0;
         $plan->load('hasTasks');
         $r=$plan->getRelations();
         $r=(object)$r;
@@ -36,11 +36,13 @@ class Plans extends Model
         {
             if ($t->status == 1)
             {
-               continue;
+               $f=1;
+               $plan->end_date=now();
             }
             elseif ($t->status==0)
             {
                 $f=0;
+                $plan->end_date=NULL;
                 break;
             }
         }

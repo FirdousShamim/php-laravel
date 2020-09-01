@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use phpDocumentor\Reflection\Types\Null_;
 
 class CreateTasksTable extends Migration
 {
@@ -21,7 +22,7 @@ class CreateTasksTable extends Migration
             $table->unsignedBigInteger('user_assigned')->nullable();
             $table->timestamps();
             $table->timestamp('due_date')->nullable();
-
+            $table->timestamp('end_date')->default(NULL);
             $table->foreign('plan_id')
                 ->references('id')
                 ->on('plans')

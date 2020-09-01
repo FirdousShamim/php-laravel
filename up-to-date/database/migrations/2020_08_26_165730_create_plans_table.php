@@ -21,7 +21,7 @@ class CreatePlansTable extends Migration
             $table->boolean('status')->default(false);
             $table->timestamps();
             $table->timestamp('due_date')->nullable();
-
+            $table->timestamp('end_date')->default(NULL);
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
