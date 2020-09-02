@@ -2,13 +2,20 @@
 
 @extends('layouts.app')
 
+@section('plans')
+
+<li>
+    <a class="nav-link"  href="{{ url('/home/plans') }}">Plans</a>
+</li>
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-            <div class="card-header">Add Collaborator 
-            <a href="/home/plans/{{$plan->id}}" class="float-right"><i class="fa fa-arrow-left" >Go to Plans</i></a>
+            <div class="card-header">Add Collaborator
+            <a href="/home/plans/{{$plan->id}}" class="float-right"><i class="fa fa-arrow-left" >Back</i></a>
 
             </div>
             <div class="card-body">
@@ -32,21 +39,21 @@
                                 <div class="invalid-feedback" role="alert">
                                     <strong>{{$message}}</strong>
                                 </div>
-                            @enderror    
-                        </div>   
+                            @enderror
+                        </div>
                     </div>
 
-                
+
                     <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
                                     Send Invitation
-                                </button>                                
+                                </button>
                             </div>
-                            
+
                     </div>
 
-               
+
             </form>
             </div>
             </div>

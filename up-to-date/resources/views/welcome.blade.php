@@ -12,8 +12,10 @@
         <!-- Styles -->
         <style>
             html, body {
-                background-color: #fff;
-                color: #636b6f;
+
+                background-color:#FFF1ED;
+                background-image: url('/home/firdous/Binaryfolks/up-to-date/public/images/home.png') ;
+                color: #434BE7;
                 font-family: 'Nunito', sans-serif;
                 font-weight: 200;
                 height: 100vh;
@@ -49,7 +51,7 @@
             }
 
             .links > a {
-                color: #636b6f;
+                color: #434BE7 ;
                 padding: 0 25px;
                 font-size: 13px;
                 font-weight: 600;
@@ -68,7 +70,7 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a href="{{ url('/home/plans') }}"><strong>Plans</strong></a>
                     @else
                         <a href="{{ route('login') }}">Login</a>
 
@@ -80,8 +82,8 @@
             @endif
 
             <div class="content">
-                <div class="title m-b-md">
-                    Up-to-Date
+                <div class="title">
+                    <img class='center' src={{ asset('images/logo.png') }} style=" height:300px"/>
                 </div>
 
                 <div class="links">

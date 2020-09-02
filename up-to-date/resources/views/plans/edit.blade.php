@@ -1,25 +1,33 @@
 @extends ('layouts.app')
 
-@section('head')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+@section('plans')
+
+<li>
+    <a class="nav-link"  href="{{ url('/home/plans') }}">Plans</a>
+</li>
 @endsection
 
-
 @section ('content')
-<div id='wrapper'>
-        <div id='page' class="container">
-            <h1 class="heading has-text-weight-bold is-size-4">Lets update Plans</h1>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title">
+                        <strong><h2>Lets update Plans</h2></strong>
+                    </div>
+
             <form method="POST" action='/home/plans/{{$plan->id}}'>
             @csrf
-            @method('PUT')          
-                <div class="feild">
-                    <label class='label' for='title'>Title</label>
+            @method('PUT')
+                <div class='form-group row'>
+                    <label class="col-md-2 col-form-label text-md-right" for='title'>Title</label>
 
-                    <div class="control">
-                        <input 
-                            class='input {{$errors->has('title')? 'is-danger' : ''}}' 
-                            type="text" 
-                            name="title" 
+                    <div class="control col-md-8">
+                        <input
+                            class='form-control input {{$errors->has('title')? 'is-danger' : ''}}'
+                            type="text"
+                            name="title"
                             id="title"
                             value="{{$plan->title}}">
                         @if ($errors->has('title'))
@@ -27,28 +35,28 @@
                         @endif
                     </div>
                 </div>
-                <div class="feild ">
-                    <label class='label' for='duedate'>Due Date</label>
+                <div class="form-group row" style="margin-bottom: 30px">
+                    <label class="col-md-2 col-form-label text-md-right" for='duedate'>Due Date</label>
 
-                    <div class="control">
-                        <input 
-                            class='input {{$errors->has('duedate')? 'is-danger' : ''}}' 
-                            type="date" 
-                            name="duedate" 
+                    <div class="control col-md-8">
+                        <input
+                            class='form-control input {{$errors->has('duedate')? 'is-danger' : ''}}'
+                            type="date"
+                            name="duedate"
                             id="duedate"
                             value="{{ $plan->duedate}}">
                         @if ($errors->has('duedate'))
                             <p class="help is-danger">{{$errors->first('duedate')}}</p>
                         @endif
                     </div>
-                </div>     
+                </div>
                 <div class="field is-grouped">
-                    <div class="control">
-                        <button class="button is-link" type="submit">Update</button>
+                    <div class="col-md-6 offset-md-5">
+                        <button class="btn btn-primary" type="submit">Update</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-
+        </div></div></div>
 @endsection

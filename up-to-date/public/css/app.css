@@ -8,6 +8,7 @@
  */
 
 :root {
+    --themeColor: #FFF1ED;
   --blue: #3490dc;
   --indigo: #6574cd;
   --purple: #9561e2;
@@ -2117,6 +2118,7 @@ pre code {
 .form-control {
   display: block;
   width: 100%;
+  
   height: calc(1.6em + 0.75rem + 2px);
   padding: 0.375rem 0.75rem;
   font-size: 0.9rem;
@@ -2128,6 +2130,7 @@ pre code {
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -4415,6 +4418,7 @@ input[type=button].btn-block {
 .nav-link {
   display: block;
   padding: 0.5rem 1rem;
+  font-weight: bold;
 }
 
 .nav-link:hover,

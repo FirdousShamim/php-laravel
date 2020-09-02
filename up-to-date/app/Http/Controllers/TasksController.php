@@ -64,8 +64,8 @@ class TasksController extends Controller
         return redirect(route('plans.show',$task->plan_id));
     }
     public function complete(Plans $plan)
-    {        
-        // 
+    {
+        //
         // dd('he');
         $task_id=Str::of(request()->getPathInfo())->beforeLast('/')->afterLast('/');
         $task=Tasks::all()->whereIn('id',$task_id)->first();
@@ -75,8 +75,8 @@ class TasksController extends Controller
         return redirect(route('plans.show',$plan));
     }
     public function uncomplete(Plans $plan)
-    {        
-        // 
+    {
+        //
         // dd('he');
         $task_id=Str::of(request()->getPathInfo())->beforeLast('/')->afterLast('/');
         $task=Tasks::all()->whereIn('id',$task_id)->first();
@@ -91,13 +91,13 @@ class TasksController extends Controller
         $cs=((object)($plan->load('collaborators')->getRelations()))->collaborators;
         $task_id=Str::of(request()->getPathInfo())->beforeLast('/')->afterLast('/');
         $task=Tasks::all()->whereIn('id',$task_id)->first();
-        dump($plan,$task);
+        //dump($plan,$task);
         return view('tasks.edit',['plan'=>$plan, 'task'=>$task, 'collaborators'=>$cs]);
     }
 
     public function update(Plans $plan)
     {
-        
+
         $task_id=Str::of(request()->getPathInfo())->afterLast('/');
         $task=Tasks::find($task_id);
         $task->update($this->validateTask());
@@ -107,7 +107,7 @@ class TasksController extends Controller
     }
 
     public function destroy(Plans $plan)
-    {        
+    {
         $task_id=Str::of(request()->getPathInfo())->beforeLast('/')->afterLast('/');
         $task=Tasks::all()->whereIn('id',$task_id)->first();
         $task->delete();
@@ -120,9 +120,9 @@ class TasksController extends Controller
         return request()->validate([
             'title'=>['required','min:3','max:255'],
             'plan_id'=>['required'],
-            'due_date' => ['required|date_format:Y-m-d']            
+            'due_date' => ['required|date_format:Y-m-d']
             ]);
-         
+
     }
 
 }
