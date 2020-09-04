@@ -19,10 +19,18 @@
 
             </div>
             <div class="card-body">
-                @if (session('message'))
+                @if (session('message') == 'Invitation sent Successfully')
                     <div class="alert alert-success" role="alert">
                         {{ session('message') }}
                     </div>
+                @elseif (session('message') == 'User is already a collaborator')
+                        <div class="alert alert-warning" role="alert">
+                        {{ session('message') }}
+                    </div>
+                @elseif (session('message') == 'User does not exist')
+                    <div class="alert alert-danger" role="alert">
+                    {{ session('message') }}
+                </div>
                 @endif
                 <form
                     method="POST"

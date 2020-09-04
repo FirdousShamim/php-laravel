@@ -11,7 +11,7 @@ class DueDateNear extends Notification
 {
     use Queueable;
 
-    protected $user, $plan, $due_date;
+    protected $user, $plan, $due_date,$url;
 
     /**
      * Create a new notification instance.
@@ -21,13 +21,14 @@ class DueDateNear extends Notification
 
 
 
-    public function __construct($user, $category, $for, $due_date)
+    public function __construct($user, $category, $for, $due_date,$url)
     {
         //
         $this->user=$user;
         $this->category=$category;
         $this->for=$for;
         $this->due_date=$due_date;
+        $this->url=$url;
     }
 
     /**
@@ -52,10 +53,10 @@ class DueDateNear extends Notification
         return (new MailMessage)
                     ->subject('Due Date Near')
                     ->line('Hey,  '.$this->user)
-                    ->line('Your due date for '.$this->category. ' namely ' . $this->for . ' is near. Less then 3 days remanining')
+                    ->line('Your due date for '.$this->category. ' namely ' . $this->for . ' is near. Less than 3 days remanining')
                     ->line('The Due date for '.$this->for .' '.$this->category. ' is '.$this->due_date)
                     ->line('Please complete your '.$this->category.' or reschedule')
-                    ->action('Go to '.$this->category,url('/http://up-to-date.test/plans'))
+                    ->action('Go to '. $this->category,url($this->url))
                     ->line('Thank you!');
     }
 

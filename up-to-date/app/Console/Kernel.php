@@ -24,11 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call('\App\Http\Controllers\PlansController@schedule')->daily();
+        $schedule->call('\App\Http\Controllers\PlansController@schedule')->everyMinute();
         //$schedule->command('Notificcation::send(reque')
-
-
-
 
     }
 

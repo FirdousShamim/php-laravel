@@ -85,20 +85,46 @@ class PlansController extends Controller
     }
     public function edit(Plans $plan)
     {
+        $a=(((object)($plan->load('author')->getRelations()))->author);
+        if ( auth()->user() == $a   )
+        {
         return view('plans.edit',compact('plan'));
+        }
+        else{
+            return response()->json(['error' => 'Not the owner of the plan'], 403);
+        }
     }
     public function update(Plans $plan)
     {
         //dump($plan);
-        $plan->update($this->validatePlan());
-        //dump($this,$this->validatePlan(), $plan);
-        return redirect(route('plans.show',$plan));
+        $a=(((object)($plan->load('author')->getRelations()))->author);
+        if ( auth()->user() == $a   )
+        {
+
+            $plan->due_date=request('duedate');
+
+            $plan->update($this->validatePlan());
+            //dump($this,$this->validatePlan(), $plan);
+            return redirect(route('plans.show',$plan));
+        }
+        else{
+            return response()->json(['error' => 'Not the owner of the plan'], 403);
+        }
+
     }
 
     public function addCollaborator(Plans $plan)
     {
         //dump(session('message'),$plan);
-        return view('plans.addCollab',compact('plan'));
+        $a=(((object)($plan->load('author')->getRelations()))->author);
+        if ( auth()->user() == $a   )
+        {
+
+            return view('plans.addCollab',compact('plan'));
+        }
+        else{
+            return response()->json(['error' => 'Not the owner of the plan'], 403);
+        }
     }
     public function emailCollaborator(Plans $plan)
     {
@@ -106,39 +132,63 @@ class PlansController extends Controller
 
         request()->validate(['email'=>'required|email']);
         $a=(((object)($plan->load('author')->getRelations()))->author)->name;
+        $cs=((object)($plan->load('collaborators')->getRelations()))->collaborators;
 
         $url='http://up-to-date.test'.Str::of(request()->getPathInfo())->beforeLast('/');
         //dump(request('email'));
         //dump(User::all()->whereIn('email',request('email'))->first());
 
-        Mail::to(request('email'))
-             ->send(new AddCollab($url, $plan->title, $a ));
+
 
         $u=User::all()->whereIn('email',request('email'))->first();
-        if ($u == NULL)
+        $create=TRUE;
+
+        if($u == NULL)
         {
             //user does'nt exist need to create a account
             //listen for the user registering
             //reflect the chnage in User and Collaborator DB
+            $create=FALSE;
+            return redirect(route('plans.addCollab',$plan))
+             ->with('message','User does not exist');
         }
         else
         {
+            $cs=Collaborators::all()->whereIn('user_id',$u->id);
+            $matchThese = ['user_id' => $u->id , 'plan_id' => $plan->id];
+            $results = Collaborators::where($matchThese)->get();
+            //dump($results,$results->isEmpty());
+            //dump($c->user_id, $u->id ,$c->plan_id,$plan->id);
 
-            $collab= new Collaborators();
-            $collab->user_id=$u->id;
-            $collab->plan_id=$plan->id;
-            $collab->save();
+            if($results->isEmpty())
+            {
+
+                $collab= new Collaborators();
+                $collab->user_id=$u->id;
+                $collab->plan_id=$plan->id;
+                $collab->save();
+                Mail::to(request('email'))
+                ->send(new AddCollab($url, $plan->title, $a ));
+                return redirect(route('plans.addCollab',$plan))
+                ->with('message','Invitation sent Successfully');
+            }
+            else
+            {
+                    $create=False;
+                    return redirect(route('plans.addCollab',$plan))
+                    ->with('message','User is already a collaborator');
+
+
+            }
+            //
+
         }
-
-
-        return redirect(route('plans.addCollab',$plan))
-             ->with('message','Inivite for collaboration sent');
-
-    }
+  }
 
     public function schedule()
     {
         $plans=Plans::all();
+        $tasks=Tasks::all();
         foreach ($plans as $plan)
         {
            // dump(date_diff(date('Y-m-d',(strtotime(now()))),date('Y-m-d',(strtotime($plan->due_date)))));
@@ -149,9 +199,47 @@ class PlansController extends Controller
             {
                 //dump('less than3 days remaining',now(),(int)$diff->format("%r%a"),$plan->due_date);
                 $user=(((object)($plan->load('author')->getRelations()))->author);
-                $user->notify(new DueDateNear($user->name,'plan',$plan->title,$plan->due_date));
+                $url='http://up-to-date.test/home/plans/'.$plan->id;
+                $user->notify(new DueDateNear($user->name,'plan',$plan->title,Str::of($plan->due_date)->before(' '),$url));
+                $cs=((object)($plan->load('collaborators')->getRelations()))->collaborators;
+                foreach($cs as $c)
+                {
+                    User::find($c->user_id)->notify(new DueDateNear($user->name,'plan',$plan->title,Str::of($plan->due_date)->before(' '),$url));
+                }
+
             }
         }
+        foreach ($tasks as $task)
+        {
+            $diff=date_diff(now(),date_create($task->due_date));
+            if ( (int)$diff->format("%r%a")  < 3 )
+            {   $plan=Plans::find($task->plan_id);
+                $user=(((object)($plan->load('author')->getRelations()))->author);
+                $url='http://up-to-date.test/home/plans/'.$plan->id;
+                $user->notify(new DueDateNear($user->name,'task',$task->title,Str::of($plan->due_date)->before(' '),$url));
+            }
+        }
+    }
+    public function destroy(Plans $plan)
+    {
+        $cs=((object)($plan->load('collaborators')->getRelations()))->collaborators;
+        $a=(((object)($plan->load('author')->getRelations()))->author);
+        $t=((object)($plan->load('hasTasks')->getRelations()))->hasTasks;
+
+
+        //dump(request(),$plan);
+        if ( auth()->user() == $a   )
+            {
+                //dump("auth user");
+                //dump($plan,$t,$cs);
+                $plan->delete();
+                //return redirect('plans.show',['plan'=>$plan ,'tasks'=>$t, 'collaborators'=>$cs]);
+                return redirect()->route('plans.index', ['plan'=>$plan ,'tasks'=>$t, 'collaborators'=>$cs]);
+            }
+            else{
+                return response()->json(['error' => 'Not the owner of the plan'], 403);
+            }
+
     }
     // public function complete(Plans $plan)
     // {

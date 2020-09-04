@@ -14,10 +14,12 @@
 <div id="wrapper" style="margin: 25px 25px 25px 25px">
 	<div id="page" class="container-full" >
         <div class="row ">
-            <div class="col-md-2" style="background-color:white; padding:10x;" id="content">
+            <div class="col-md-3" style="padding:10x;" id="content">
 
+            <div class="container bg-white shadow-sm rounded" >
+                <br>
                 @if  ($plan->status == 0)
-                    <h3 style="color:Red">{{$plan->title}}</h3>
+                    <h3 style="color:Red" >{{$plan->title}}</h3>
                 @else
                     <h3 style="color: Green">{{$plan->title}}
                     <i class="fa fa-check-circle" ></i></h3>
@@ -43,14 +45,34 @@
                     @else
                     <li>
                         Due Date:   {{Str::of($plan->due_date)->before(' ')}}
-                        <a href="/home/plans/{{$plan->id}}/edit"  data-toggle="tooltip" title="Edit" data-placement="right">
-                        <i class="fa fa-pencil-square-o" style=" vertical-align: middle;"></i>
-                        </a>
                     </li>
                     @endif
                 </ul>
                 <hr>
-                <div class="row">
+
+                <div class="row  justify-content-end" style="padding-bottom: 10px;">
+
+                    <form method="POST" action='/home/plans/{{$plan->id}}/delete'>
+                        @csrf
+                        @method('PUT')
+
+                        <div class="control">
+                            <button class="btn btn-sm "  type="submit"><div class="col-1" ><i class="fa fa-trash"></i></div></button>
+                        </div>
+                    </form>
+                    <a href="/home/plans/{{$plan->id}}/edit"  data-toggle="tooltip" title="Edit" data-placement="right">
+                       <button class="btn btn-sm"> <i class="fa fa-pencil-square-o" ></i></button>
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="container bg-white shadow-sm rounded " style="margin-top:25px">
+                <br>
+                <div class="row ">
+
+
                     <div class="col-10"><h4>Collaborators</h4></div>
                     <div class="col-2"><a href="/home/plans/{{$plan->id}}/addCollaborator"><i class="fa fa-plus-circle"></i></a></div>
                 </div>
@@ -64,14 +86,14 @@
                 </ul>
                 <hr>
                 <!-- <a href="/home/plans" class="float-right"><i class="fa fa-arrow-left" >Go to Plans</i></a> -->
-
+            </div>
 
             </div>
 
 
 
-            <div class="col-md-10" >
-                <div class="card">
+            <div class="col-md-9 " >
+                <div class="card ">
                     <div class="card-header">Tasks
                         <a href="/home/plans/{{$plan->id}}/createtask" class="float-right"><i class="fa fa-plus-circle">Create Task</i></a>
                     </div>

@@ -1,11 +1,6 @@
 @extends ('layouts.app')
 
-@section('plans')
 
-<li>
-    <a class="nav-link"  href="{{ url('/home/plans') }}">Plans</a>
-</li>
-@endsection
 
 @section ('content')
 <div class="container">

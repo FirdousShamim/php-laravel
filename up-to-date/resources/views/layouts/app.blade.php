@@ -83,7 +83,7 @@
             </div>
         </nav>
 
-        <main class="py-4" style="background-color: #374B73 ;height : 90vh">
+        <main class="py-4" style="height : 90vh">
             @yield('content')
         </main>
     </div>

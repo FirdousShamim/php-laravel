@@ -11,7 +11,7 @@ class CreatePlansTable extends Migration
      *
      * @return void
      */
-    
+
     public function up()
     {
         Schema::create('plans', function (Blueprint $table) {
@@ -21,7 +21,8 @@ class CreatePlansTable extends Migration
             $table->boolean('status')->default(false);
             $table->timestamps();
             $table->timestamp('due_date')->nullable();
-            $table->timestamp('end_date')->default(NULL);
+            $table->timestamp('end_date')->nullable();
+
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')

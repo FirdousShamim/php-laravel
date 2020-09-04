@@ -51,13 +51,12 @@ class TasksController extends Controller
 
     public function store()
     {
-
-        //dump(request());
+        //dump(request(['title','due_date','plan_id']));
         $this->validateTask();
-        // //$task= new Tasks(request(['title','plan_id','duedate']));
+        // // //$task= new Tasks(request(['title','plan_id','duedate']));
         $task= new Tasks();
         $task->title=Str::ucfirst(request('title'));
-        $task->due_date=request('duedate');
+        $task->due_date=request('due_date');
         $task->plan_id=request('plan_id');
         $task->save();
         //dump($task);
@@ -65,13 +64,11 @@ class TasksController extends Controller
     }
     public function complete(Plans $plan)
     {
-        //
         // dd('he');
         $task_id=Str::of(request()->getPathInfo())->beforeLast('/')->afterLast('/');
         $task=Tasks::all()->whereIn('id',$task_id)->first();
         $task->completed();
         //dump(request(),$task_id,$task);
-
         return redirect(route('plans.show',$plan));
     }
     public function uncomplete(Plans $plan)
@@ -100,10 +97,11 @@ class TasksController extends Controller
 
         $task_id=Str::of(request()->getPathInfo())->afterLast('/');
         $task=Tasks::find($task_id);
+        $task->due_date=request('due_date');
         $task->update($this->validateTask());
         //$task->validateTask();
-        dump($plan,$task, $this, $this->validateTask());
-        //return redirect(route('plans.show',$plan));
+        //dump($plan,$task, $this, $this->validateTask(),request(),request('due_date'));
+        return redirect(route('plans.show',$plan));
     }
 
     public function destroy(Plans $plan)
@@ -112,15 +110,13 @@ class TasksController extends Controller
         $task=Tasks::all()->whereIn('id',$task_id)->first();
         $task->delete();
         //dump(request(),$task_id,$task);
-
         return redirect(route('plans.show',$plan));
     }
     protected function validateTask()
     {
         return request()->validate([
             'title'=>['required','min:3','max:255'],
-            'plan_id'=>['required'],
-            'due_date' => ['required|date_format:Y-m-d']
+            'plan_id'=> ['required']
             ]);
 
     }

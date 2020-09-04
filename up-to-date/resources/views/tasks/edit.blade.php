@@ -1,8 +1,5 @@
 @extends ('layouts.app')
 
-@section('head')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
-@endsection
 
 
 @section ('content')
@@ -15,14 +12,14 @@
             <form method="POST" action='/home/plans/{{$plan->id}}/tasks/{{$task->id}}'>
             @csrf
             @method('PUT')
-                <div class="feild">
+                <div class="form-group row">
                     <input type="hidden" name="plan_id" value="{{$plan->id}}">
 
-                    <label class='label' for='title'>Task Title</label>
+                    <label class='col-md-2 col-form-label text-md-right'  for='title'>Task Title</label>
 
-                    <div class="control">
+                    <div class="control col-md-8">
                         <input
-                            class='input {{$errors->has('title')? 'is-danger' : ''}}'
+                            class='form-control input {{$errors->has('title')? 'is-danger' : ''}}'
                             type="text"
                             name="title"
                             id="title"
@@ -32,27 +29,27 @@
                         @endif
                     </div>
                 </div>
-                <div class="feild "style="margin-bottom: 30px">
-                    <label class='label' for='duedate'>Due Date</label>
+                <div class="form-group row"style="margin-bottom: 30px">
+                    <label class='col-md-2 col-form-label text-md-right'  for='due_date'>Due Date</label>
 
-                    <div class="control">
-                        <input
-                            class='input {{$errors->has('duedate')? 'is-danger' : ''}}'
-                            type="date"
-                            name="duedate"
-                            id="duedate"
-                            value="{{ $task->duedate}}">
-                        @if ($errors->has('duedate'))
-                            <p class="help is-danger">{{$errors->first('duedate')}}</p>
-                        @endif
-                    </div>
+                    <div class="control col-md-8">
+                            <input
+                                class='form-control  input {{$errors->has('due_date')? 'is-danger' : ''}}'
+                                type="date"
+                                name="due_date"
+                                id="due_date"
+                                value="{{ old('due_date')}}">
+                            @if ($errors->has('due_date'))
+                                <p class="help is-danger">{{$errors->first('due_date')}}</p>
+                            @endif
+                        </div>
 
                 </div>
                 <div class="field is-grouped">
-                    <div class="col-md-6 offset-md-5">
-                        <button class="button is-link" type="submit">Update</button>
+                        <div class="col-md-6 offset-md-5">
+                           <button class="btn btn-primary " type="submit">Update</button>
+                        </div>
                     </div>
-                </div>
             </form>
         </div>
     </div>

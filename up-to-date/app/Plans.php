@@ -8,7 +8,7 @@ use phpDocumentor\Reflection\Types\Null_;
 class Plans extends Model
 {
     //
-    
+
     protected $guarded = [];
 
 
@@ -21,7 +21,7 @@ class Plans extends Model
     public function collaborators()
     {
            return $this->hasMany(Collaborators::class,'plan_id'); //select * from user where planID=(current planID)
-        
+
     }
     public function isCompleted()
     {

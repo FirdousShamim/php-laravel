@@ -31,6 +31,8 @@ Route::put('/home/plans/{plan}','PlansController@update');
 Route::get('/home/plans/{plan}/addCollaborator','PlansController@addCollaborator')->name('plans.addCollab');
 Route::post('/home/plans/{plan}/addCollaborator','PlansController@emailCollaborator');
 Route::post('/home/plans/schedule','PlansController@schedule');
+Route::put('/home/plans/{plan}/delete','PlansController@destroy');
+
 
 // Route::put('/home/plans/{plan}/complete','PlansController@complete');
 

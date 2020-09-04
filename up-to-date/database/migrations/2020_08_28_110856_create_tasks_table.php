@@ -22,7 +22,7 @@ class CreateTasksTable extends Migration
             $table->unsignedBigInteger('user_assigned')->nullable();
             $table->timestamps();
             $table->timestamp('due_date')->nullable();
-            $table->timestamp('end_date')->default(NULL);
+            $table->timestamp('end_date')->nullable();
             $table->foreign('plan_id')
                 ->references('id')
                 ->on('plans')

@@ -31,17 +31,17 @@
                     </div>
 
                     <div class="form-group row" style="margin-bottom: 30px">
-                        <label class='col-md-2 col-form-label text-md-right' for='duedate'>Due Date</label>
+                        <label class='col-md-2 col-form-label text-md-right' for='due_date'>Due Date</label>
 
                         <div class="control col-md-8">
                             <input
-                                class='form-control  input {{$errors->has('duedate')? 'is-danger' : ''}}'
+                                class='form-control  input {{$errors->has('due_date')? 'is-danger' : ''}}'
                                 type="date"
-                                name="duedate"
-                                id="duedate"
-                                value="{{ old('duedate')}}">
-                            @if ($errors->has('duedate'))
-                                <p class="help is-danger">{{$errors->first('duedate')}}</p>
+                                name="due_date"
+                                id="due_date"
+                                value="{{ old('due_date')}}">
+                            @if ($errors->has('due_date'))
+                                <p class="help is-danger">{{$errors->first('due_date')}}</p>
                             @endif
                         </div>
                     </div>
